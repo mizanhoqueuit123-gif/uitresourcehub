@@ -3,5 +3,5 @@
   "name": "uit-resource-hub",
   "compatibility_date": "2026-08-13",
   "compatibility_flags": ["nodejs_compat"],
-  "main": ".open-next/worker.js"
+  "pages_build_output_dir": ".vercel/output/static"
 }
