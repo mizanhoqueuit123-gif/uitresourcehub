@@ -2,7 +2,15 @@ import Link from 'next/link';
 import { Search, BookOpen, GraduationCap, ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 
-const branches = [
+type Branch = readonly [string, string];
+type RecentPaper = {
+  id: string;
+  title: string;
+  year: number | null;
+  exam_type: string | null;
+};
+
+const branches: Branch[] = [
   ['CSE', 'Computer Science & Engineering'],
   ['EE', 'Electrical Engineering'],
   ['IT', 'Information Technology'],
@@ -25,6 +33,8 @@ export default async function Home() {
       .order('created_at', { ascending: false })
       .limit(6),
   ]);
+
+  const recentPapers = (recent ?? []) as RecentPaper[];
 
   return (
     <>
@@ -50,9 +60,11 @@ export default async function Home() {
                 className="min-w-0 flex-1 px-4 py-3 text-slate-900 outline-none"
                 placeholder="Search resources, subjects or codes..."
               />
-              <button className="rounded-lg bg-[#0b1f3a] px-5 py-3 font-semibold text-white">
-                <Search className="mr-1 inline" size={18} />
-                Search
+              <button
+                type="submit"
+                className="rounded-lg bg-[#0b1f3a] px-5 py-3 font-semibold text-white"
+              >
+                <Search className="mr-1 inline" size={18} /> Search
               </button>
             </form>
           </div>
@@ -92,7 +104,6 @@ export default async function Home() {
               View all <ArrowRight className="inline" size={16} />
             </Link>
           </div>
-
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {branches.map(([code, name]) => (
               <Link
@@ -114,15 +125,15 @@ export default async function Home() {
       <section className="container py-14">
         <h2 className="text-3xl font-bold">Recent uploads</h2>
         <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {(recent ?? []).map((p: any) => (
+          {recentPapers.map((paper) => (
             <Link
-              href={`/resource/${p.id}`}
-              key={p.id}
+              href={`/resource/${paper.id}`}
+              key={paper.id}
               className="card p-5"
             >
-              <p className="font-semibold">{p.title}</p>
+              <p className="font-semibold">{paper.title}</p>
               <p className="mt-2 text-sm text-slate-500">
-                {p.exam_type} · {p.year ?? 'Year not specified'}
+                {paper.exam_type ?? 'Resource'} · {paper.year ?? 'Year not specified'}
               </p>
             </Link>
           ))}
