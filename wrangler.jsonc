@@ -1,7 +1,11 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
+  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "uit-resource-hub",
+  "main": ".open-next/worker.js",
   "compatibility_date": "2026-08-13",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": ".vercel/output/static"
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".open-next/assets"
+  }
 }
